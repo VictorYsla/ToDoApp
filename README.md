@@ -1,4 +1,4 @@
-# ToDoApp
+# To-Do App
 
 ### Getting started
 Open terminal and locate the project, then put this depending on your OS:
