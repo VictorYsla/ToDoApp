@@ -1,7 +1,12 @@
 # To-Do App
 
 ### Getting started
-Open terminal and locate the project, then put this depending on your OS:
+Open terminal and locate the project, then put this :
+```javascript
+npm install
+npx pod-install // for IOS
+```
+After installing, place:
 ```javascript
 npx react-native run-android
 npx react-native run-ios
