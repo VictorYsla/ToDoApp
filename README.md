@@ -29,3 +29,4 @@ npx react-native run-ios
 * redux: "^4.1.0",
 * redux-devtools-extension: "^2.13.9",
 * redux-persist: "^6.0.0"
+#### Note: There should be no spaces on the project directory path
