@@ -1,6 +1,6 @@
 import Card from '../components/Card';
 import React from 'react';
-import { Pressable, Text, StyleSheet, View } from 'react-native';
+import { Pressable, Text, StyleSheet, View, SafeAreaView } from 'react-native';
 import {
   COLORS,
   FONT_SIZE,
@@ -23,7 +23,7 @@ type Props = {
 
 const HomeScreen = ({ navigation }: Props) => {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Card>
         <HomeHeader />
         <CompletedTasks />
@@ -42,7 +42,7 @@ const HomeScreen = ({ navigation }: Props) => {
           </Pressable>
         </View>
       </Card>
-    </View>
+    </SafeAreaView>
   );
 };
 
