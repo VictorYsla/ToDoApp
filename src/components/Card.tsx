@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { COLORS, SCREEN_HEIGHT, SCREEN_WIDTH } from '../theme';
+import { COLORS } from '../theme';
+import { normalize } from '../common/helpers/responsive';
 
 type Props = {
   children: ReactNode;
@@ -15,10 +16,10 @@ export default Card;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.white,
-    borderRadius: SCREEN_HEIGHT * 0.03,
-    height: '97%',
+    borderRadius: normalize(20),
+    flex: 1,
     width: '90%',
-    elevation: SCREEN_HEIGHT * 0.03,
+    elevation: normalize(20),
     shadowOffset: { height: 1, width: 1 },
     shadowColor: '#333',
     shadowOpacity: 0.3,

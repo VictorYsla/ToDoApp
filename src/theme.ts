@@ -1,3 +1,4 @@
+import { normalize } from './common/helpers/responsive';
 import { Dimensions } from 'react-native';
 
 export const SCREEN_WIDTH = Dimensions.get('screen').width;
@@ -19,9 +20,9 @@ export const COLORS = {
 };
 
 export const FONT_SIZE = {
-  small: SCREEN_HEIGHT * 0.016,
-  normal: SCREEN_HEIGHT * 0.018,
-  large: SCREEN_HEIGHT * 0.022,
+  small: normalize(16),
+  normal: normalize(18),
+  large: normalize(20),
 };
 
-export const letterSpacing = SCREEN_WIDTH * 0.0009;
+export const letterSpacing = normalize(2.5);

@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
     borderRadius: SCREEN_HEIGHT * 0.02,
     height: '90%',
     justifyContent: 'center',
-    // padding: SCREEN_HEIGHT * 0.01,
+    marginBottom: SCREEN_HEIGHT * 0.07,
     width: '100%',
   },
   pressableText: {

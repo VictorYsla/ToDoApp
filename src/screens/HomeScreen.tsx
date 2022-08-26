@@ -59,7 +59,6 @@ const styles = StyleSheet.create({
 
   view: {
     alignItems: 'center',
-    // borderWidth: 1,
     height: SCREEN_HEIGHT * 0.07,
     justifyContent: 'center',
     paddingHorizontal: SCREEN_WIDTH * 0.1,
@@ -70,7 +69,7 @@ const styles = StyleSheet.create({
     borderRadius: SCREEN_HEIGHT * 0.02,
     height: '90%',
     justifyContent: 'center',
-    // padding: SCREEN_HEIGHT * 0.01,
+    marginBottom: SCREEN_HEIGHT * 0.07,
     width: '100%',
   },
   textPressable: {

@@ -1,7 +1,14 @@
+import { normalize } from '../common/helpers/responsive';
 import React from 'react';
 import { Text, StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { COLORS, FONT_SIZE, SCREEN_HEIGHT, SCREEN_WIDTH } from '../theme';
+import {
+  COLORS,
+  FONT_SIZE,
+  letterSpacing,
+  SCREEN_HEIGHT,
+  SCREEN_WIDTH,
+} from '../theme';
 
 const HomeHeader = () => {
   return (
@@ -32,36 +39,32 @@ export default HomeHeader;
 
 const styles = StyleSheet.create({
   container: {
-    borderBottomWidth: SCREEN_WIDTH * 0.005,
+    borderBottomWidth: normalize(3),
     borderBottomColor: COLORS.gray,
-    height: SCREEN_HEIGHT * 0.1,
+    height: normalize(70),
     justifyContent: 'flex-end',
-    paddingHorizontal: SCREEN_WIDTH * 0.1,
-    paddingBottom: SCREEN_HEIGHT * 0.01,
+    paddingBottom: normalize(10),
   },
   view: {
     alignItems: 'center',
-    //   borderWidth: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
 
   todoApp: {
-    // borderWidth: 1,
     color: COLORS.black87,
     fontSize: FONT_SIZE.large,
     fontWeight: '700',
-    letterSpacing: SCREEN_WIDTH * 0.0009,
-    width: SCREEN_WIDTH * 0.45,
+    letterSpacing: letterSpacing,
+    width: normalize(120),
   },
   iconsView: {
-    // borderWidth: 1,
     backgroundColor: '#26c16f',
-    borderRadius: SCREEN_HEIGHT * 0.0025,
-    height: SCREEN_HEIGHT * 0.006,
-    right: SCREEN_WIDTH * 0.003,
-    top: SCREEN_WIDTH * 0.003,
+    borderRadius: normalize(2.5),
+    height: normalize(6),
+    right: normalize(3),
+    top: normalize(3),
     position: 'absolute',
-    width: SCREEN_HEIGHT * 0.006,
+    width: normalize(6),
   },
 });
