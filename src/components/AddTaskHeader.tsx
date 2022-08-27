@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { COLORS, FONT_SIZE, SCREEN_HEIGHT, SCREEN_WIDTH } from '../theme';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/RootStackParamList';
+import { normalize } from '../common/helpers/responsive';
 
 type AddTaskHeader = NativeStackNavigationProp<
   RootStackParamList,
@@ -33,21 +34,18 @@ export default AddTaskHeader;
 
 const styles = StyleSheet.create({
   container: {
-    borderBottomWidth: SCREEN_WIDTH * 0.005,
+    borderBottomWidth: normalize(3),
     borderBottomColor: COLORS.gray,
-    height: SCREEN_HEIGHT * 0.1,
+    height: normalize(70),
     justifyContent: 'flex-end',
-    paddingHorizontal: SCREEN_WIDTH * 0.1,
-    paddingBottom: SCREEN_HEIGHT * 0.01,
+    paddingHorizontal: normalize(20),
+    paddingBottom: normalize(10),
   },
   view: {
     alignItems: 'center',
-    // borderWidth: 1,
     flexDirection: 'row',
-    // justifyContent: 'space-between',
   },
   icon: {
-    // borderWidth: 1,
     color: COLORS.black38,
     fontSize: FONT_SIZE.small,
     height: SCREEN_HEIGHT * 0.03,

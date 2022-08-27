@@ -1,5 +1,12 @@
-import React, { Dispatch, PropsWithChildren, useEffect, useState } from 'react';
-import { Pressable, Text, StyleSheet, View, Keyboard } from 'react-native';
+import React, { Dispatch, PropsWithChildren, useState } from 'react';
+import {
+  Pressable,
+  Text,
+  StyleSheet,
+  View,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 import {
   COLORS,
   FONT_SIZE,
@@ -18,6 +25,7 @@ import { connect, DispatchProp, Matching } from 'react-redux';
 import { Action, AnyAction, CombinedState } from 'redux';
 import { actions } from '../contexts/reduxConfig';
 import { getRandomColor } from '../common/helpers/colorHelper';
+import { normalize } from '../common/helpers/responsive';
 
 type AddTaskForm = NativeStackNavigationProp<
   RootStackParamList,
@@ -48,7 +56,6 @@ const initialValues = {
 const AddTaskForm = ({ dispatch, navigation, tasks, ...props }: otherProp) => {
   const [showRemind, setShowRemind] = useState(false);
   const [showRepeat, setShowRepeat] = useState(false);
-  const [keyboardStatus, setKeyboardStatus] = useState(false);
   const [data, setData] = useState(initialValues);
 
   const sendTask = () => {
@@ -66,44 +73,14 @@ const AddTaskForm = ({ dispatch, navigation, tasks, ...props }: otherProp) => {
     alert('Task created!');
   };
 
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      () => {
-        setKeyboardStatus(true); // or some other action
-      },
-    );
-    const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
-      () => {
-        setKeyboardStatus(false); // or some other action
-        Keyboard.dismiss();
-      },
-    );
-
-    return () => {
-      keyboardDidHideListener.remove();
-      keyboardDidShowListener.remove();
-    };
-  }, []);
-
   return (
-    <Pressable
-      style={{
-        height: keyboardStatus ? SCREEN_HEIGHT * 0.4 : SCREEN_HEIGHT * 0.8,
-      }}
-      onPress={() => (
-        Keyboard.dismiss(), setShowRemind(false), setShowRepeat(false)
-      )}
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{ flex: 1 }}
     >
       <ScrollView>
-        <View
-          style={{
-            height: SCREEN_HEIGHT * 0.68,
-            paddingHorizontal: SCREEN_WIDTH * 0.1,
-          }}
-        >
-          <View style={{ marginTop: SCREEN_HEIGHT * 0.03 }}>
+        <View style={{ borderWidth: 1 }}>
+          <View style={{ marginTop: normalize(15) }}>
             <Text style={styles.inputLabel}>Title</Text>
             <TextInput
               style={styles.input}
@@ -111,13 +88,11 @@ const AddTaskForm = ({ dispatch, navigation, tasks, ...props }: otherProp) => {
               onChangeText={(text) => setData({ ...data, title: text })}
             />
           </View>
-          <View style={{ marginTop: SCREEN_HEIGHT * 0.03 }}>
+          <View style={{ marginTop: normalize(15) }}>
             <Text style={styles.inputLabel}>Deadline</Text>
             <DatePicker setData={setData} data={data} />
           </View>
-          <View
-            style={{ marginTop: SCREEN_HEIGHT * 0.03, flexDirection: 'row' }}
-          >
+          <View style={{ marginTop: normalize(15), flexDirection: 'row' }}>
             <View style={{ width: '50%' }}>
               <Text style={styles.inputLabel}>Start time</Text>
               <TimePicker setData={setData} data={data} type={true} />
@@ -127,7 +102,7 @@ const AddTaskForm = ({ dispatch, navigation, tasks, ...props }: otherProp) => {
               <TimePicker setData={setData} data={data} />
             </View>
           </View>
-          <View style={{ marginTop: SCREEN_HEIGHT * 0.03 }}>
+          <View style={{ marginTop: normalize(15) }}>
             <Text style={styles.inputLabel}>Remind</Text>
             <Picker
               setShow={setShowRemind}
@@ -151,19 +126,17 @@ const AddTaskForm = ({ dispatch, navigation, tasks, ...props }: otherProp) => {
             />
           </View>
         </View>
-        <View style={styles.pressableContainer}>
-          <Pressable
-            style={({ pressed }) => [
-              { backgroundColor: pressed ? COLORS.primaryDeg : COLORS.primary },
-              styles.pressable,
-            ]}
-            onPress={sendTask}
-          >
-            <Text style={styles.pressableText}>Add a task</Text>
-          </Pressable>
-        </View>
+        <Pressable
+          style={({ pressed }) => [
+            { backgroundColor: pressed ? COLORS.primaryDeg : COLORS.primary },
+            styles.presable,
+          ]}
+          onPress={sendTask}
+        >
+          <Text style={styles.textPressable}>Add a task</Text>
+        </Pressable>
       </ScrollView>
-    </Pressable>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -179,32 +152,22 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
-  pressableContainer: {
-    alignItems: 'center',
-    // borderWidth: 1,
-    height: SCREEN_HEIGHT * 0.07,
-    justifyContent: 'center',
-    // marginTop: SCREEN_HEIGHT * 0.025,
-    paddingHorizontal: SCREEN_WIDTH * 0.1,
-    width: SCREEN_WIDTH * 0.9,
-  },
 
-  pressable: {
+  presable: {
     alignItems: 'center',
-    borderRadius: SCREEN_HEIGHT * 0.02,
-    height: '90%',
+    borderRadius: normalize(15),
+    height: normalize(40),
     justifyContent: 'center',
-    marginBottom: SCREEN_HEIGHT * 0.07,
-    width: '100%',
+    marginBottom: normalize(20),
+    marginHorizontal: normalize(20),
   },
-  pressableText: {
+  textPressable: {
     color: 'white',
     fontSize: FONT_SIZE.normal,
     letterSpacing: letterSpacing,
   },
 
   inputLabel: {
-    //   borderWidth: 1,
     color: COLORS.black87,
     fontSize: FONT_SIZE.normal,
     fontWeight: '700',
@@ -213,7 +176,6 @@ const styles = StyleSheet.create({
     width: SCREEN_WIDTH * 0.45,
   },
   input: {
-    //   borderWidth: 1,
     backgroundColor: COLORS.gray,
     borderRadius: SCREEN_HEIGHT * 0.009,
     color: COLORS.black38,
