@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
     borderBottomColor: COLORS.gray,
     height: normalize(70),
     justifyContent: 'flex-end',
+    paddingHorizontal: normalize(20),
     paddingBottom: normalize(10),
   },
   view: {

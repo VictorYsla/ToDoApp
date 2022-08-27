@@ -14,6 +14,7 @@ import PendingTasks from '../components/PendingTasks';
 import SceneName from '../navigation/SceneNames';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/RootStackParamList';
+import { normalize } from '../common/helpers/responsive';
 
 type HomeScreen = NativeStackNavigationProp<RootStackParamList, 'HomeScreen'>;
 
@@ -25,22 +26,24 @@ const HomeScreen = ({ navigation }: Props) => {
   return (
     <SafeAreaView style={styles.container}>
       <Card>
-        <HomeHeader />
-        <CompletedTasks />
-        <PendingTasks navigation={navigation} />
-        <View style={styles.view}>
-          <Pressable
-            style={({ pressed }) => [
-              {
-                backgroundColor: pressed ? COLORS.primaryDeg : COLORS.primary,
-              },
-              styles.presable,
-            ]}
-            onPress={() => navigation.navigate(SceneName.AddTaskScreen)}
-          >
-            <Text style={styles.textPressable}>Add a task</Text>
-          </Pressable>
+        <View style={{ flex: 1 }}>
+          <HomeHeader />
+          <View style={{ marginHorizontal: normalize(20) }}>
+            <CompletedTasks />
+            <PendingTasks navigation={navigation} />
+          </View>
         </View>
+        <Pressable
+          style={({ pressed }) => [
+            {
+              backgroundColor: pressed ? COLORS.primaryDeg : COLORS.primary,
+            },
+            styles.presable,
+          ]}
+          onPress={() => navigation.navigate(SceneName.AddTaskScreen)}
+        >
+          <Text style={styles.textPressable}>Add a task</Text>
+        </Pressable>
       </Card>
     </SafeAreaView>
   );
@@ -57,20 +60,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
-  view: {
-    alignItems: 'center',
-    height: SCREEN_HEIGHT * 0.07,
-    justifyContent: 'center',
-    paddingHorizontal: SCREEN_WIDTH * 0.1,
-    width: SCREEN_WIDTH * 0.9,
-  },
   presable: {
     alignItems: 'center',
-    borderRadius: SCREEN_HEIGHT * 0.02,
-    height: '90%',
+    borderRadius: normalize(15),
+    height: normalize(40),
     justifyContent: 'center',
-    marginBottom: SCREEN_HEIGHT * 0.07,
-    width: '100%',
+    marginBottom: normalize(20),
+    marginHorizontal: normalize(20),
   },
   textPressable: {
     color: 'white',

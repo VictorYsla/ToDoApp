@@ -1,7 +1,6 @@
 import React, { Dispatch, PropsWithChildren, useState } from 'react';
 import { Pressable, Text, StyleSheet, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import {
   COLORS,
   FONT_SIZE,
@@ -14,6 +13,7 @@ import { actions } from '../contexts/reduxConfig';
 import { Action, AnyAction, CombinedState } from 'redux';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/RootStackParamList';
+import { normalize } from '../common/helpers/responsive';
 
 type valueProps = {
   create: number;
@@ -104,38 +104,31 @@ export default connect(mapStateToProps)(PendingTasks);
 
 const styles = StyleSheet.create({
   container: {
-    // borderWidth: 1,
-    borderColor: 'red',
-    height: SCREEN_HEIGHT * 0.38,
+    height: normalize(200),
     justifyContent: 'center',
-    paddingHorizontal: SCREEN_WIDTH * 0.1,
-    marginVertical: SCREEN_HEIGHT * 0.04,
+    marginVertical: normalize(15),
   },
 
   pendingtext: {
-    // borderWidth: 1,
     color: COLORS.black87,
     fontSize: FONT_SIZE.large,
     fontWeight: '700',
     letterSpacing: letterSpacing,
-    width: SCREEN_WIDTH * 0.5,
-    marginBottom: SCREEN_HEIGHT * 0.04,
+    marginBottom: normalize(10),
   },
 
   pressable: {
     alignItems: 'center',
-    borderWidth: 1.5,
-    borderRadius: SCREEN_HEIGHT * 0.004,
-    height: SCREEN_HEIGHT * 0.02,
+    borderWidth: 1,
+    borderRadius: normalize(5),
+    height: normalize(20),
     justifyContent: 'center',
-    width: SCREEN_HEIGHT * 0.02,
+    width: normalize(20),
   },
-
   textPressable: {
     color: COLORS.black87,
     fontSize: FONT_SIZE.small,
-    paddingLeft: SCREEN_HEIGHT * 0.012,
     letterSpacing: letterSpacing,
-    width: '90%',
+    paddingLeft: normalize(12),
   },
 });
