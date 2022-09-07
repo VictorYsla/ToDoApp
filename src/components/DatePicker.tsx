@@ -68,7 +68,6 @@ const styles = StyleSheet.create({
     borderRadius: normalize(15),
     color: COLORS.black38,
     fontSize: FONT_SIZE.small,
-    fontWeight: '700',
     height: normalize(40),
     lineHeight: Platform.OS === 'ios' ? normalize(40) : undefined,
     paddingHorizontal: SCREEN_HEIGHT * 0.01,

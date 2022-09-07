@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZE.large,
     fontWeight: '700',
     letterSpacing: letterSpacing,
-    marginBottom: normalize(20),
+    marginBottom: normalize(10),
   },
 
   view: {

@@ -4,6 +4,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { COLORS, FONT_SIZE, SCREEN_HEIGHT } from '../theme';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { getMilliseconds, getTime } from '../common/helpers/getTime';
+import { normalize } from '../common/helpers/responsive';
 
 type Props = {
   setData: React.Dispatch<
@@ -44,13 +45,13 @@ const TimePicker = ({ setData, data, type }: Props) => {
   };
 
   return (
-    <View style={{ width: '90%' }}>
+    <View style={{ width: '100%' }}>
       <Pressable style={styles.pressable} onPress={showTimepicker}>
         <Text style={styles.text}>
           {' '}
           {getTime(new Date(type ? data.startTime : data.endtime))}
         </Text>
-        <Icon name="clock" color={COLORS.black38} />
+        <Icon name="clock" color={COLORS.black38} size={normalize(15)} />
       </Pressable>
       {show && (
         <DateTimePicker
@@ -70,19 +71,18 @@ export default TimePicker;
 
 const styles = StyleSheet.create({
   pressable: {
-    //   borderWidth: 1,
-    borderRadius: SCREEN_HEIGHT * 0.009,
     alignItems: 'center',
     backgroundColor: COLORS.gray,
+    borderRadius: normalize(10),
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: normalize(10),
   },
   text: {
     color: COLORS.black38,
     fontSize: FONT_SIZE.small,
-    fontWeight: '700',
-    height: SCREEN_HEIGHT * 0.05,
-    paddingHorizontal: SCREEN_HEIGHT * 0.01,
+    height: normalize(40),
+    lineHeight: normalize(40),
     textAlignVertical: 'center',
-    width: '80%',
   },
 });

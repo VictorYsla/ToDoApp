@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Pressable, Text, StyleSheet } from 'react-native';
 import { COLORS, FONT_SIZE, SCREEN_HEIGHT } from '../theme';
+import { normalize } from '../common/helpers/responsive';
 
 type Props = {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
@@ -37,13 +38,11 @@ const Picker = ({
   data,
   setData,
 }: Props) => {
-  const { remind, repeat } = data;
-
   const option = options.map((item, index) => {
     return (
       <Pressable
         key={index}
-        style={{ marginVertical: SCREEN_HEIGHT * 0.003 }}
+        style={{ marginVertical: normalize(3) }}
         onPress={() => (
           typeof item === 'number' && setData({ ...data, remind: item }),
           typeof item !== 'number' && setData({ ...data, repeat: item }),
@@ -56,11 +55,28 @@ const Picker = ({
   });
 
   return (
-    <View style={{ width: '90%' }}>
+    <View
+      style={{
+        borderRadius: normalize(10),
+        marginBottom: typeof options[0] !== 'number' ? normalize(10) : 0,
+      }}
+    >
       <Text style={styles.dataText} onPress={() => setShow(!show)}>{`${
         typeof options[0] === 'number' ? data.remind : data.repeat
       } ${text ? text : ''}`}</Text>
-      {show && <View style={[styles.view, { height: height }]}>{option}</View>}
+      {show && (
+        <View
+          style={[
+            styles.view,
+            {
+              height: height,
+              marginBottom: typeof options[0] !== 'number' ? normalize(10) : 0,
+            },
+          ]}
+        >
+          {option}
+        </View>
+      )}
     </View>
   );
 };
@@ -69,35 +85,25 @@ export default Picker;
 
 const styles = StyleSheet.create({
   optionText: {
-    //   borderWidth: 1,
-    // backgroundColor: COLORS.gray,
-    borderRadius: SCREEN_HEIGHT * 0.009,
     color: COLORS.black38,
     fontSize: FONT_SIZE.small,
-    fontWeight: '700',
-    height: SCREEN_HEIGHT * 0.023,
-    paddingHorizontal: SCREEN_HEIGHT * 0.01,
+    marginTop: normalize(3),
     textAlignVertical: 'center',
+    paddingHorizontal: normalize(10),
   },
   dataText: {
-    //   borderWidth: 1,
     backgroundColor: COLORS.gray,
-    borderRadius: SCREEN_HEIGHT * 0.009,
+    borderRadius: normalize(10),
     color: COLORS.black38,
     fontSize: FONT_SIZE.small,
-    fontWeight: '700',
-    height: SCREEN_HEIGHT * 0.05,
-    paddingHorizontal: SCREEN_HEIGHT * 0.01,
+    height: normalize(40),
+    lineHeight: normalize(40),
+    marginBottom: normalize(5),
+    paddingHorizontal: normalize(10),
     textAlignVertical: 'center',
   },
   view: {
     backgroundColor: COLORS.gray,
-    // borderBottomWidth: 1,
-    // borderLeftWidth: 1,
-    // borderRightWidth: 1,
-    marginTop: SCREEN_HEIGHT * 0.05,
-    position: 'absolute',
-    zIndex: 3,
     width: '100%',
   },
 });

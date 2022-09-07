@@ -26,6 +26,7 @@ import { Action, AnyAction, CombinedState } from 'redux';
 import { actions } from '../contexts/reduxConfig';
 import { getRandomColor } from '../common/helpers/colorHelper';
 import { normalize } from '../common/helpers/responsive';
+import SceneName from '../navigation/SceneNames';
 
 type AddTaskForm = NativeStackNavigationProp<
   RootStackParamList,
@@ -57,9 +58,11 @@ const AddTaskForm = ({ dispatch, navigation, tasks, ...props }: otherProp) => {
   const [showRemind, setShowRemind] = useState(false);
   const [showRepeat, setShowRepeat] = useState(false);
   const [data, setData] = useState(initialValues);
+  const [isFocus, setIsFocus] = useState(false);
 
   const sendTask = () => {
     tasks &&
+      data.title &&
       dispatch(
         actions.addTask([
           ...tasks,
@@ -70,7 +73,12 @@ const AddTaskForm = ({ dispatch, navigation, tasks, ...props }: otherProp) => {
           },
         ]),
       );
-    alert('Task created!');
+    if (data.title) {
+      alert('Task created!');
+      navigation.navigate(SceneName.HomeScreen);
+    } else {
+      alert('You must add a title');
+    }
   };
 
   return (
@@ -78,13 +86,15 @@ const AddTaskForm = ({ dispatch, navigation, tasks, ...props }: otherProp) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{ flex: 1 }}
     >
-      <ScrollView>
-        <View style={{ borderWidth: 1 }}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={{ marginHorizontal: normalize(20) }}>
           <View style={{ marginTop: normalize(15) }}>
             <Text style={styles.inputLabel}>Title</Text>
             <TextInput
               style={styles.input}
               value={data.title}
+              onFocus={() => setIsFocus(true)}
+              onBlur={() => setIsFocus(false)}
               onChangeText={(text) => setData({ ...data, title: text })}
             />
           </View>
@@ -92,12 +102,18 @@ const AddTaskForm = ({ dispatch, navigation, tasks, ...props }: otherProp) => {
             <Text style={styles.inputLabel}>Deadline</Text>
             <DatePicker setData={setData} data={data} />
           </View>
-          <View style={{ marginTop: normalize(15), flexDirection: 'row' }}>
-            <View style={{ width: '50%' }}>
+          <View
+            style={{
+              marginTop: normalize(15),
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}
+          >
+            <View style={{ width: '45%' }}>
               <Text style={styles.inputLabel}>Start time</Text>
               <TimePicker setData={setData} data={data} type={true} />
             </View>
-            <View style={{ width: '50%' }}>
+            <View style={{ width: '45%' }}>
               <Text style={styles.inputLabel}>End time</Text>
               <TimePicker setData={setData} data={data} />
             </View>
@@ -108,34 +124,37 @@ const AddTaskForm = ({ dispatch, navigation, tasks, ...props }: otherProp) => {
               setShow={setShowRemind}
               show={showRemind}
               options={remind}
-              height={SCREEN_HEIGHT * 0.15}
+              height={normalize(130)}
               text={'minutes early'}
               setData={setData}
               data={data}
             />
           </View>
-          <View style={{ marginTop: SCREEN_HEIGHT * 0.03 }}>
+          <View style={{ marginTop: normalize(15) }}>
             <Text style={styles.inputLabel}>Repeat</Text>
             <Picker
               setShow={setShowRepeat}
               show={showRepeat}
               options={repeat}
-              height={SCREEN_HEIGHT * 0.06}
+              height={normalize(60)}
               setData={setData}
               data={data}
             />
           </View>
         </View>
-        <Pressable
-          style={({ pressed }) => [
-            { backgroundColor: pressed ? COLORS.primaryDeg : COLORS.primary },
-            styles.presable,
-          ]}
-          onPress={sendTask}
-        >
-          <Text style={styles.textPressable}>Add a task</Text>
-        </Pressable>
       </ScrollView>
+      <Pressable
+        style={({ pressed }) => [
+          {
+            backgroundColor: pressed ? COLORS.primaryDeg : COLORS.primary,
+            marginBottom: isFocus ? normalize(50) : normalize(20),
+          },
+          styles.presable,
+        ]}
+        onPress={sendTask}
+      >
+        <Text style={styles.textPressable}>Add a task</Text>
+      </Pressable>
     </KeyboardAvoidingView>
   );
 };
@@ -158,7 +177,6 @@ const styles = StyleSheet.create({
     borderRadius: normalize(15),
     height: normalize(40),
     justifyContent: 'center',
-    marginBottom: normalize(20),
     marginHorizontal: normalize(20),
   },
   textPressable: {
@@ -171,17 +189,14 @@ const styles = StyleSheet.create({
     color: COLORS.black87,
     fontSize: FONT_SIZE.normal,
     fontWeight: '700',
-    letterSpacing: SCREEN_WIDTH * 0.0009,
-    marginBottom: SCREEN_HEIGHT * 0.005,
-    width: SCREEN_WIDTH * 0.45,
+    letterSpacing: letterSpacing,
   },
   input: {
     backgroundColor: COLORS.gray,
-    borderRadius: SCREEN_HEIGHT * 0.009,
+    borderRadius: normalize(10),
     color: COLORS.black38,
     fontSize: FONT_SIZE.small,
-    fontWeight: '700',
-    height: SCREEN_HEIGHT * 0.05,
-    paddingHorizontal: SCREEN_HEIGHT * 0.01,
+    height: normalize(40),
+    paddingHorizontal: normalize(10),
   },
 });
