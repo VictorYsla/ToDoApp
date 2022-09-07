@@ -52,7 +52,7 @@ export default connect(mapStateToProps)(CompletedTasks);
 
 const styles = StyleSheet.create({
   container: {
-    height: normalize(150),
+    height: normalize(200),
     justifyContent: 'center',
     marginTop: normalize(20),
   },
