@@ -101,6 +101,7 @@ const styles = StyleSheet.create({
     marginBottom: normalize(5),
     paddingHorizontal: normalize(10),
     textAlignVertical: 'center',
+    overflow: 'hidden',
   },
   view: {
     backgroundColor: COLORS.gray,

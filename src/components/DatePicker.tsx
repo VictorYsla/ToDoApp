@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Platform, Text, StyleSheet } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { COLORS, FONT_SIZE, SCREEN_HEIGHT } from '../theme';
+import { COLORS, FONT_SIZE } from '../theme';
 import { getDate } from '../common/helpers/getDate';
 import { normalize } from '../common/helpers/responsive';
 
@@ -65,12 +65,13 @@ export default DatePicker;
 const styles = StyleSheet.create({
   text: {
     backgroundColor: COLORS.gray,
-    borderRadius: normalize(15),
+    borderRadius: normalize(10),
     color: COLORS.black38,
     fontSize: FONT_SIZE.small,
     height: normalize(40),
     lineHeight: Platform.OS === 'ios' ? normalize(40) : undefined,
-    paddingHorizontal: SCREEN_HEIGHT * 0.01,
+    paddingHorizontal: normalize(10),
     textAlignVertical: 'center',
+    overflow: 'hidden',
   },
 });
