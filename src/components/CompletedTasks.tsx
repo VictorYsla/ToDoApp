@@ -1,5 +1,5 @@
 import React, { Dispatch, PropsWithChildren } from 'react';
-import { Pressable, Text, StyleSheet, View } from 'react-native';
+import { Pressable, Text, StyleSheet, View, Alert } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { COLORS, FONT_SIZE, letterSpacing } from '../theme';
 import { connect, Matching } from 'react-redux';
@@ -7,6 +7,7 @@ import { Action, CombinedState } from 'redux';
 import { normalize } from '../common/helpers/responsive';
 import { actions } from '../contexts/reduxConfig';
 import { taskProps } from '../common/types';
+import { simpleAlert } from '../common/helpers/alert';
 
 type ActionsProps = (
   addTask: (tasks: taskProps[]) => {
@@ -33,7 +34,13 @@ const CompletedTasks = ({ dispatch, doneTasks }: Props) => {
     const currentTask =
       doneTasks.length &&
       doneTasks.filter((item: taskProps) => item.create !== task.create);
-    currentTask && dispatch(actions.addDoneTask(currentTask));
+
+    simpleAlert(
+      'Delete task',
+      'Do you wish to delete this task?',
+      () => {},
+      () => currentTask && dispatch(actions.addDoneTask(currentTask)),
+    );
   };
 
   return (
