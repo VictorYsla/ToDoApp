@@ -12,7 +12,7 @@ import { simpleAlert } from '../common/helpers/alert';
 type ActionsProps = (
   addTask: (tasks: taskProps[]) => {
     type: string;
-    tasks: taskProps[];
+    pendingTasks: taskProps[];
   },
   addDoneTask: (doneTasks: taskProps[]) => {
     type: string;
@@ -23,15 +23,19 @@ type ActionsProps = (
 type secundaryProps = {
   dispatch: Dispatch<Action>;
   doneTasks: [];
+  pendingTasks: [];
 };
 
 type Props = PropsWithChildren<
-  Matching<{ doneTasks: taskProps[] } & ActionsProps, secundaryProps>
+  Matching<
+    { pendingTasks: taskProps[]; doneTasks: taskProps[] } & ActionsProps,
+    secundaryProps
+  >
 >;
 
-const CompletedTasks = ({ dispatch, doneTasks }: Props) => {
+const CompletedTasks = ({ dispatch, doneTasks, pendingTasks }: Props) => {
   const deleteTask = (task: taskProps) => {
-    const currentTask =
+    const currentDoneTask =
       doneTasks.length &&
       doneTasks.filter((item: taskProps) => item.create !== task.create);
 
@@ -39,8 +43,17 @@ const CompletedTasks = ({ dispatch, doneTasks }: Props) => {
       'Delete task',
       'Do you wish to delete this "complete" task?',
       () => {},
-      () => currentTask && dispatch(actions.addDoneTask(currentTask)),
+      () => currentDoneTask && dispatch(actions.addDoneTask(currentDoneTask)),
     );
+  };
+
+  const undoCompleteTask = (task: taskProps) => {
+    const currentDoneTasks =
+      doneTasks.length &&
+      doneTasks.filter((item: taskProps) => item.create !== task.create);
+    currentDoneTasks && dispatch(actions.addDoneTask(currentDoneTasks));
+
+    dispatch(actions.addPendingTask([...pendingTasks, task]));
   };
 
   return (
@@ -56,7 +69,7 @@ const CompletedTasks = ({ dispatch, doneTasks }: Props) => {
                 styles.pressable,
                 { backgroundColor: item.color, borderColor: item.color },
               ]}
-              disabled
+              onPress={() => undoCompleteTask(item)}
             />
             <Text style={styles.textPressable}>{item.title}</Text>
           </Pressable>
@@ -66,12 +79,17 @@ const CompletedTasks = ({ dispatch, doneTasks }: Props) => {
   );
 };
 
-type stateProps = CombinedState<{ doneTasks: { doneTasks: taskProps[] } }>;
+type stateProps = CombinedState<{
+  pendingTasks: { pendingTasks: taskProps[] };
+  doneTasks: { doneTasks: taskProps[] };
+}>;
 
 const mapStateToProps = (state: stateProps) => {
+  const pendingTasks = state?.pendingTasks.pendingTasks;
   const doneTasks: taskProps[] = state?.doneTasks.doneTasks;
   return {
     doneTasks,
+    pendingTasks,
   };
 };
 export default connect(mapStateToProps)(CompletedTasks);

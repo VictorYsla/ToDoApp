@@ -8,7 +8,7 @@ const persistConfig = {
   key: 'root2',
   keyPrefix: '',
   storage: AsyncStorage,
-  whitelist: ['tasks', 'doneTasks'],
+  whitelist: ['pendingTasks', 'doneTasks'],
 
   // blacklist: ["busqueda"],
 };

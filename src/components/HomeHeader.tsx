@@ -2,13 +2,7 @@ import { normalize } from '../common/helpers/responsive';
 import React from 'react';
 import { Text, StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {
-  COLORS,
-  FONT_SIZE,
-  letterSpacing,
-  SCREEN_HEIGHT,
-  SCREEN_WIDTH,
-} from '../theme';
+import { COLORS, FONT_SIZE, letterSpacing } from '../theme';
 
 const HomeHeader = () => {
   return (

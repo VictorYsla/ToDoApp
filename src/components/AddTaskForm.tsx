@@ -7,13 +7,7 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import {
-  COLORS,
-  FONT_SIZE,
-  letterSpacing,
-  SCREEN_HEIGHT,
-  SCREEN_WIDTH,
-} from '../theme';
+import { COLORS, FONT_SIZE, letterSpacing } from '../theme';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import DatePicker from './DatePicker';
 import TimePicker from './TimePicker';
@@ -30,17 +24,17 @@ import SceneName from '../navigation/SceneNames';
 
 type AddTaskForm = NativeStackNavigationProp<
   RootStackParamList,
-  'AddTaskScreen'
+  SceneName.AddTaskForm
 >;
 
 type Props = {
   navigation: AddTaskForm;
   dispatch: Dispatch<Action>;
-  tasks: [];
+  pendingTasks: [];
 };
 
 type otherProp = PropsWithChildren<
-  Matching<{ tasks: [] | undefined } & DispatchProp<AnyAction>, Props>
+  Matching<{ pendingTasks: [] | undefined } & DispatchProp<AnyAction>, Props>
 >;
 
 const today = Date.parse(new Date().toISOString());
@@ -54,18 +48,23 @@ const initialValues = {
   repeat: 'Weekly',
 };
 
-const AddTaskForm = ({ dispatch, navigation, tasks, ...props }: otherProp) => {
+const AddTaskForm = ({
+  dispatch,
+  navigation,
+  pendingTasks,
+  ...props
+}: otherProp) => {
   const [showRemind, setShowRemind] = useState(false);
   const [showRepeat, setShowRepeat] = useState(false);
   const [data, setData] = useState(initialValues);
   const [isFocus, setIsFocus] = useState(false);
 
   const sendTask = () => {
-    tasks &&
+    pendingTasks &&
       data.title &&
       dispatch(
-        actions.addTask([
-          ...tasks,
+        actions.addPendingTask([
+          ...pendingTasks,
           {
             ...data,
             create: Date.parse(new Date().toISOString()),
@@ -161,10 +160,12 @@ const AddTaskForm = ({ dispatch, navigation, tasks, ...props }: otherProp) => {
   );
 };
 
-type stateProps = CombinedState<{ tasks: { tasks: [] } }> | undefined;
+type stateProps =
+  | CombinedState<{ pendingTasks: { pendingTasks: [] } }>
+  | undefined;
 
 const mapStateToProps = (state: stateProps) => ({
-  tasks: state?.tasks.tasks,
+  pendingTasks: state?.pendingTasks.pendingTasks,
 });
 export default connect(mapStateToProps)(AddTaskForm);
 

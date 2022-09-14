@@ -16,14 +16,14 @@ type PendingTasks = NativeStackNavigationProp<RootStackParamList, 'HomeScreen'>;
 type secundaryProps = {
   navigation: PendingTasks;
   dispatch: Dispatch<Action>;
-  tasks: [];
+  pendingTasks: [];
   doneTasks: [];
 };
 
 type Props = PropsWithChildren<
   Matching<
     {
-      tasks: taskProps[];
+      pendingTasks: taskProps[];
       doneTasks: taskProps[];
     } & DispatchProp<AnyAction>,
     Matching<{ tasks: taskProps[] } & DispatchProp<AnyAction>, secundaryProps>
@@ -33,27 +33,30 @@ type Props = PropsWithChildren<
 const PendingTasks = ({
   dispatch,
   navigation,
-  tasks,
+  pendingTasks,
   doneTasks,
   ...props
 }: Props) => {
   const doneTask = (value: taskProps) => {
     doneTasks && dispatch(actions.addDoneTask([...doneTasks, value]));
-    const currentTask =
-      tasks && tasks.filter((item: taskProps) => item.create !== value.create);
-    currentTask && dispatch(actions.addTask(currentTask));
+    const currentPendingTask =
+      pendingTasks &&
+      pendingTasks.filter((item: taskProps) => item.create !== value.create);
+    currentPendingTask && dispatch(actions.addPendingTask(currentPendingTask));
   };
 
   const deleteTask = (task: taskProps) => {
-    const currentTask =
-      tasks.length &&
-      tasks.filter((item: taskProps) => item.create !== task.create);
+    const currentPendingTask =
+      pendingTasks.length &&
+      pendingTasks.filter((item: taskProps) => item.create !== task.create);
 
     simpleAlert(
       'Delete task',
       'Do you wish to delete this "pending" task?',
       () => {},
-      () => currentTask && dispatch(actions.addTask(currentTask)),
+      () =>
+        currentPendingTask &&
+        dispatch(actions.addPendingTask(currentPendingTask)),
     );
   };
 
@@ -61,7 +64,7 @@ const PendingTasks = ({
     <View style={styles.container}>
       <Text style={styles.pendingtext}>Pending tasks</Text>
       <FlatList
-        data={tasks}
+        data={pendingTasks}
         keyExtractor={(item) => item.create}
         renderItem={({ item }) => (
           <View
@@ -89,15 +92,15 @@ const PendingTasks = ({
   );
 };
 type stateProps = CombinedState<{
-  tasks: { tasks: taskProps[] };
+  pendingTasks: { pendingTasks: taskProps[] };
   doneTasks: { doneTasks: taskProps[] };
 }>;
 
 const mapStateToProps = (state: stateProps) => {
-  const tasks = state?.tasks.tasks;
+  const pendingTasks = state?.pendingTasks.pendingTasks;
   const doneTasks = state?.doneTasks.doneTasks;
   return {
-    tasks,
+    pendingTasks,
     doneTasks,
   };
 };
