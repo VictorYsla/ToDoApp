@@ -147,7 +147,9 @@ const AddTaskForm = ({ dispatch, navigation, tasks, ...props }: otherProp) => {
         style={({ pressed }) => [
           {
             backgroundColor: pressed ? COLORS.primaryDeg : COLORS.primary,
-            marginBottom: isFocus ? normalize(50) : normalize(20),
+            marginBottom: isFocus
+              ? normalize(Platform.OS === 'android' ? 60 : 50)
+              : normalize(20),
           },
           styles.presable,
         ]}

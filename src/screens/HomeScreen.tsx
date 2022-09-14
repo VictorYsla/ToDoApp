@@ -1,6 +1,13 @@
 import Card from '../components/Card';
 import React from 'react';
-import { Pressable, Text, StyleSheet, View, SafeAreaView } from 'react-native';
+import {
+  Pressable,
+  Text,
+  StyleSheet,
+  View,
+  SafeAreaView,
+  Platform,
+} from 'react-native';
 import {
   COLORS,
   FONT_SIZE,
@@ -24,7 +31,12 @@ type Props = {
 
 const HomeScreen = ({ navigation }: Props) => {
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={[
+        styles.container,
+        { marginVertical: Platform.OS === 'android' ? normalize(15) : 0 },
+      ]}
+    >
       <Card>
         <View style={{ flex: 1 }}>
           <HomeHeader />
@@ -54,7 +66,6 @@ export default HomeScreen;
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    borderWidth: 1,
     backgroundColor: COLORS.gray,
     flex: 1,
     justifyContent: 'center',
