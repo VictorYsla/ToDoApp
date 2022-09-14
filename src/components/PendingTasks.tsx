@@ -9,6 +9,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/RootStackParamList';
 import { normalize } from '../common/helpers/responsive';
 import { taskProps } from '../common/types';
+import { simpleAlert } from '../common/helpers/alert';
 
 type PendingTasks = NativeStackNavigationProp<RootStackParamList, 'HomeScreen'>;
 
@@ -43,6 +44,19 @@ const PendingTasks = ({
     currentTask && dispatch(actions.addTask(currentTask));
   };
 
+  const deleteTask = (task: taskProps) => {
+    const currentTask =
+      tasks.length &&
+      tasks.filter((item: taskProps) => item.create !== task.create);
+
+    simpleAlert(
+      'Delete task',
+      'Do you wish to delete this "pending" task?',
+      () => {},
+      () => currentTask && dispatch(actions.addTask(currentTask)),
+    );
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.pendingtext}>Pending tasks</Text>
@@ -57,12 +71,17 @@ const PendingTasks = ({
             }}
           >
             <Pressable
-              style={[styles.pressable, { borderColor: item.color }]}
-              onPress={() => doneTask(item)}
-            ></Pressable>
-            <Text style={styles.textPressable} numberOfLines={1}>
-              {item.title}
-            </Text>
+              style={{ flexDirection: 'row' }}
+              onLongPress={() => deleteTask(item)}
+            >
+              <Pressable
+                style={[styles.pressable, { borderColor: item.color }]}
+                onPress={() => doneTask(item)}
+              ></Pressable>
+              <Text style={styles.textPressable} numberOfLines={1}>
+                {item.title}
+              </Text>
+            </Pressable>
           </View>
         )}
       />

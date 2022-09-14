@@ -37,7 +37,7 @@ const CompletedTasks = ({ dispatch, doneTasks }: Props) => {
 
     simpleAlert(
       'Delete task',
-      'Do you wish to delete this task?',
+      'Do you wish to delete this "complete" task?',
       () => {},
       () => currentTask && dispatch(actions.addDoneTask(currentTask)),
     );
