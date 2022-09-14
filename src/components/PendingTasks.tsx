@@ -1,30 +1,14 @@
-import React, { Dispatch, PropsWithChildren, useState } from 'react';
+import React, { Dispatch, PropsWithChildren } from 'react';
 import { Pressable, Text, StyleSheet, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import {
-  COLORS,
-  FONT_SIZE,
-  letterSpacing,
-  SCREEN_HEIGHT,
-  SCREEN_WIDTH,
-} from '../theme';
+import { COLORS, FONT_SIZE, letterSpacing, SCREEN_HEIGHT } from '../theme';
 import { connect, DispatchProp, Matching } from 'react-redux';
 import { actions } from '../contexts/reduxConfig';
 import { Action, AnyAction, CombinedState } from 'redux';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/RootStackParamList';
 import { normalize } from '../common/helpers/responsive';
-
-type valueProps = {
-  create: number;
-  title: string;
-  deadLine: number;
-  startTime: number;
-  endtime: number;
-  remind: number;
-  repeat: string;
-  color: string;
-};
+import { taskProps } from '../common/types';
 
 type PendingTasks = NativeStackNavigationProp<RootStackParamList, 'HomeScreen'>;
 
@@ -38,13 +22,10 @@ type secundaryProps = {
 type Props = PropsWithChildren<
   Matching<
     {
-      tasks: [] | undefined;
-      doneTasks: [] | undefined;
+      tasks: taskProps[];
+      doneTasks: taskProps[];
     } & DispatchProp<AnyAction>,
-    Matching<
-      { tasks: [] | undefined } & DispatchProp<AnyAction>,
-      secundaryProps
-    >
+    Matching<{ tasks: taskProps[] } & DispatchProp<AnyAction>, secundaryProps>
   >
 >;
 
@@ -55,10 +36,10 @@ const PendingTasks = ({
   doneTasks,
   ...props
 }: Props) => {
-  const doneTask = (value: valueProps) => {
+  const doneTask = (value: taskProps) => {
     doneTasks && dispatch(actions.addDoneTask([...doneTasks, value]));
     const currentTask =
-      tasks && tasks.filter((item: valueProps) => item.create !== value.create);
+      tasks && tasks.filter((item: taskProps) => item.create !== value.create);
     currentTask && dispatch(actions.addTask(currentTask));
   };
 
@@ -88,9 +69,10 @@ const PendingTasks = ({
     </View>
   );
 };
-type stateProps =
-  | CombinedState<{ tasks: { tasks: any }; doneTasks: { doneTasks: any } }>
-  | undefined;
+type stateProps = CombinedState<{
+  tasks: { tasks: taskProps[] };
+  doneTasks: { doneTasks: taskProps[] };
+}>;
 
 const mapStateToProps = (state: stateProps) => {
   const tasks = state?.tasks.tasks;

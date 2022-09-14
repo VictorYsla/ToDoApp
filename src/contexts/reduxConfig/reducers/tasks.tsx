@@ -1,32 +1,20 @@
-import { AnyAction } from 'redux';
+import { taskProps } from '../../../common/types';
+import { actionStateProps } from '../../types';
+
 export const ADD_TASK = 'ADD_TASK';
 
-type addTaskProps =
-  | [
-      ...any[],
-      {
-        create: number;
-        title: string;
-        deadLine: number;
-        startTime: number;
-        endtime: number;
-        remind: number;
-        repeat: string;
-        color: string;
-      },
-    ]
-  | never[];
+type addTaskProps = taskProps[];
 
 export const addTask = (tasks: addTaskProps) => ({
   type: ADD_TASK,
   tasks,
 });
 
-const initialState = {
+const initialState: { tasks: taskProps[] } = {
   tasks: [],
 };
 
-export default (state = initialState, action: AnyAction) => {
+export default (state = initialState, action: actionStateProps) => {
   const { tasks } = action;
   switch (action.type) {
     case ADD_TASK:

@@ -1,23 +1,41 @@
-import React, { PropsWithChildren } from 'react';
+import React, { Dispatch, PropsWithChildren } from 'react';
 import { Pressable, Text, StyleSheet, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { COLORS, FONT_SIZE, letterSpacing } from '../theme';
-import { connect, DispatchProp, Matching } from 'react-redux';
-import { AnyAction, CombinedState } from 'redux';
+import { connect, Matching } from 'react-redux';
+import { Action, CombinedState } from 'redux';
 import { normalize } from '../common/helpers/responsive';
+import { actions } from '../contexts/reduxConfig';
+import { taskProps } from '../common/types';
+
+type ActionsProps = (
+  addTask: (tasks: taskProps[]) => {
+    type: string;
+    tasks: taskProps[];
+  },
+  addDoneTask: (doneTasks: taskProps[]) => {
+    type: string;
+    doneTasks: taskProps[];
+  },
+) => void;
 
 type secundaryProps = {
+  dispatch: Dispatch<Action>;
   doneTasks: [];
 };
 
 type Props = PropsWithChildren<
-  Matching<
-    { doneTasks: [] | undefined } & DispatchProp<AnyAction>,
-    secundaryProps
-  >
+  Matching<{ doneTasks: taskProps[] } & ActionsProps, secundaryProps>
 >;
 
-const CompletedTasks = ({ doneTasks }: Props) => {
+const CompletedTasks = ({ dispatch, doneTasks }: Props) => {
+  const deleteTask = (task: taskProps) => {
+    const currentTask =
+      doneTasks.length &&
+      doneTasks.filter((item: taskProps) => item.create !== task.create);
+    currentTask && dispatch(actions.addDoneTask(currentTask));
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.completedTasks}>Completed tasks</Text>
@@ -25,25 +43,26 @@ const CompletedTasks = ({ doneTasks }: Props) => {
         data={doneTasks}
         keyExtractor={(item) => item.create}
         renderItem={({ item }) => (
-          <View style={styles.view}>
+          <Pressable style={styles.view} onLongPress={() => deleteTask(item)}>
             <Pressable
               style={[
                 styles.pressable,
                 { backgroundColor: item.color, borderColor: item.color },
               ]}
+              disabled
             />
             <Text style={styles.textPressable}>{item.title}</Text>
-          </View>
+          </Pressable>
         )}
       />
     </View>
   );
 };
 
-type stateProps = CombinedState<{ doneTasks: { doneTasks: [] } }> | undefined;
+type stateProps = CombinedState<{ doneTasks: { doneTasks: taskProps[] } }>;
 
 const mapStateToProps = (state: stateProps) => {
-  const doneTasks = state?.doneTasks.doneTasks;
+  const doneTasks: taskProps[] = state?.doneTasks.doneTasks;
   return {
     doneTasks,
   };
